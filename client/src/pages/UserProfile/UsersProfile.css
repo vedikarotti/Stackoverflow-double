@@ -79,3 +79,21 @@
   margin-left: 10px;
   cursor: pointer;
 }
+
+.subscription-plans {
+  margin-top: 20px;
+}
+
+.subscription-plans button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.subscription-plans button:hover {
+  background-color: #f5f9fc;
+  color: #0074cc;
+}
