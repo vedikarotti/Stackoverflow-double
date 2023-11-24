@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://stackoverflow-rll6.onrender.com/",
+  baseURL:
+    process.env.BACKEND_ENDPOINT || "https://stackoverflow-rll6.onrender.com/",
 });
 
 API.interceptors.request.use((req) => {
