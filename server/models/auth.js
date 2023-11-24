@@ -6,6 +6,7 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   about: { type: String },
   tags: { type: [String] },
+  subscriptionPlan: { type: String },
   joinedOn: { type: Date, default: Date.now },
 });
 
