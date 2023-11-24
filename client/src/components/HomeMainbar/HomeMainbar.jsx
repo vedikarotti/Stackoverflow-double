@@ -6,80 +6,84 @@ import QuestionsList from "./QuestionsList";
 
 const HomeMainbar = () => {
   const location = useLocation();
-  const user = 1;
   const navigate = useNavigate();
 
   const questionsList = useSelector((state) => state.questionsReducer);
-  // console.log(questionsList);
-  // var questionsList = [
-  //   {
-  //     _id: 1,
-  //     upVotes: 3,
-  //     downVotes: 2,
-  //     noOfAnswers: 2,
-  //     questionTitle: "what is a function?",
-  //     questionBody: "It meant to be",
-  //     questionTags: ["java", "node js", "react js", "mongoDB"],
-  //     userPosted: "Vedika",
-  //     userId: 1,
-  //     askedOn: "Sep 11",
-  //     answer: [
-  //       {
-  //         answerBody: "Answer",
-  //         userAnswered: "Rotti",
-  //         answeredOn: "Sep 14",
-  //         userId: 2,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     _id: 2,
-  //     upVotes: 3,
-  //     downVotes: 2,
-  //     noOfAnswers: 0,
-  //     questionTitle: "what is a function?",
-  //     questionBody: "It meant to be",
-  //     questionTags: ["javascript", "R", "python"],
-  //     userPosted: "Vedika",
-  //     userId: 1,
-  //     askedOn: "Sep 11",
-  //     answer: [
-  //       {
-  //         answerBody: "Answer",
-  //         userAnswered: "Rotti",
-  //         answeredOn: "Sep 14",
-  //         userId: 2,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     _id: 3,
-  //     upVotes: 3,
-  //     downVotes: 2,
-  //     noOfAnswers: 0,
-  //     questionTitle: "what is a function?",
-  //     questionBody: "It meant to be",
-  //     questionTags: ["node js", "react js", "mongoDB"],
-  //     userPosted: "Vedika",
-  //     userId: 1,
-  //     askedOn: "Sep 11",
-  //     answer: [
-  //       {
-  //         answerBody: "Answer",
-  //         userAnswered: "Rotti",
-  //         answeredOn: "Sep 14",
-  //         userId: 2,
-  //       },
-  //     ],
-  //   },
-  // ];
+  const user = useSelector((state) => state.currentUserReducer);
 
-  const checkAuth = () => {
+  const checkSubscriptionStatus = (questionList, user) => {
+    const questionsPostedByUser = questionList.data.filter(
+      (question) => question.userId === user.result._id
+    );
+
+    const { subscriptionPlan } = user.result;
+    const numberOfQuestions = questionsPostedByUser.length;
+
+    const questionsPostedToday = questionsPostedByUser.filter((question) => {
+      const today = new Date().toDateString();
+      const questionDate = new Date(question.askedOn).toDateString();
+      return today === questionDate;
+    });
+
+    let status = {
+      isValid: false,
+      message: "",
+      subscriptionPlan: subscriptionPlan,
+    };
+
+    switch (subscriptionPlan) {
+      case "Gold Plan":
+        status.isValid = true;
+        break;
+
+      case "Silver Plan":
+        if (questionsPostedToday.length < 5) {
+          status.isValid = true;
+        } else {
+          status.isValid = false;
+          status.message =
+            "User cannot post more than 5 questions per day. Please change your subscription plan.";
+        }
+        break;
+
+      case "Free Plan":
+        if (questionsPostedToday.length === 0 && numberOfQuestions === 0) {
+          status.isValid = true;
+        } else if (questionsPostedToday.length < 1) {
+          status.isValid = true;
+        } else {
+          status.isValid = false;
+          status.message =
+            "User cannot post more than 1 question per day. Please change your subscription plan.";
+        }
+        break;
+
+      default:
+        status.isValid = false;
+        status.message =
+          "User does'nt have any subscription plan. Please go and buy the plan.";
+        status.subscriptionPlan = "Unknown Plan";
+    }
+
+    return status;
+  };
+
+  const checkAuth = async () => {
     if (user === null) {
       alert("login or signup to ask a question");
       navigate("/Auth");
     } else {
-      navigate("/AskQuestion");
+      const userStatus = checkSubscriptionStatus(questionsList, user);
+      if (!userStatus.isValid) {
+        if (userStatus.subscriptionPlan === "Unknown Plan") {
+          alert(userStatus.message);
+          navigate("/subscription");
+        } else {
+          alert(userStatus.message);
+        }
+      } else {
+        navigate("/AskQuestion");
+      }
     }
   };
 

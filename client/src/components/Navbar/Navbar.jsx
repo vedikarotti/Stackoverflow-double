@@ -8,6 +8,8 @@ import search from "../../assets/search-solid.svg";
 import Avatar from "../../components/Avatar/Avatar";
 import "./Navbar.css";
 import { setCurrentUser } from "../../actions/currentUser";
+import { NavLink } from "react-router-dom";
+import PricingPage from "../../components/PricingPage/PricingPage";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -46,6 +48,9 @@ const Navbar = () => {
         <Link to="/" className="nav-item nav-btn">
           For Teams
         </Link>
+        <NavLink to="/subscription" className="nav-item nav-btn">
+          <p>Subscription</p>
+        </NavLink>
         <form>
           <input type="text" placeholder="Search..." />
           <img src={search} alt="search" width="18" className="search-icon" />

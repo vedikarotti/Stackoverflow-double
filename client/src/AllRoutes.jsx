@@ -10,6 +10,7 @@ import DisplayQuestion from "./pages/Questions/DisplayQuestion";
 import Tags from "./pages/Tags/Tags";
 import Users from "./pages/Users/Users";
 import UserProfile from "./pages/UserProfile/UserProfile";
+import PricingPage from "./components/PricingPage/PricingPage";
 
 const AllRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AllRoutes = () => {
       <Route path="/Questions/:_id" element={<DisplayQuestion />} />
       <Route path="/Tags" element={<Tags />} />
       <Route path="/Users" element={<Users />} />
+      <Route path="/subscription" element={<PricingPage />} />
       <Route path="/Users/:_id" element={<UserProfile />} />
     </Routes>
   );

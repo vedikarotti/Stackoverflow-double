@@ -95,33 +95,9 @@ const UserProfile = () => {
           </section>
           {isCurrentUser && (
             <section className="subscription-plans">
-              <h1>Subscription Plans {plan}</h1>
-              <div>
-                <button
-                  onClick={() => {
-                    setPlan("free");
-                    handleSubscription("free");
-                  }}
-                >
-                  Subscribe to Free Plan
-                </button>
-                <button
-                  onClick={() => {
-                    setPlan("sliver");
-                    handleSubscription("sliver");
-                  }}
-                >
-                  Subscribe to Silver Plan (₹100/month)
-                </button>
-                <button
-                  onClick={() => {
-                    setPlan("gold");
-                    handleSubscription("gold");
-                  }}
-                >
-                  Subscribe to Gold Plan (₹1000/month)
-                </button>
-              </div>
+              <h3>
+                Subscription Plans: {currentUser?.result?.subscriptionPlan}
+              </h3>
             </section>
           )}
         </div>
