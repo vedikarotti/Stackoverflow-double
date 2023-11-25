@@ -16,6 +16,8 @@ import { getUserByEmailId, updateUserById } from "./controllers/users.js";
 const app = express();
 dotenv.config();
 
+app.use("/webhook", webhookRoutes);
+
 // const stripe = new Stripe(process.env.STRIPE_KEY, {
 //   apiVersion: "2020-08-27",
 // });
@@ -89,7 +91,6 @@ app.get("/", (req, res) => {
 app.use("/user", userRoutes);
 app.use("/questions", questionRoutes);
 app.use("/answer", answerRoutes);
-app.use("/webhook", webhookRoutes);
 
 const PORT = process.env.PORT || 5000;
 
