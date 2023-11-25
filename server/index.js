@@ -7,9 +7,11 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/users.js";
 import questionRoutes from "./routes/Questions.js";
 import answerRoutes from "./routes/Answers.js";
+import webhookRoutes from "./routes/webhook.js";
+
 // import Stripe from "stripe";
 import { getUserByEmailId, updateUserById } from "./controllers/users.js";
-import users from "./models/auth.js";
+// import users from "./models/auth.js";
 
 const app = express();
 dotenv.config();
@@ -21,21 +23,21 @@ dotenv.config();
 // // Find your endpoint's secret in your Dashboard's webhook settings
 // const endpointSecret = process.env.STRIPE_WHSEC_KEY;
 
-const findUserAndUpdate = async (userDetails) => {
-  // TODO: fill me in
-  console.log("Fulfilling order", userDetails);
-  const email = userDetails.customerEmail;
+// const findUserAndUpdate = async (userDetails) => {
+//   // TODO: fill me in
+//   console.log("Fulfilling order", userDetails);
+//   const email = userDetails.customerEmail;
 
-  await users.findOneAndUpdate(
-    { email },
-    { $set: { subscriptionPlan: userDetails.lineItems[0].description } },
-    { new: true }
-  );
+//   await users.findOneAndUpdate(
+//     { email },
+//     { $set: { subscriptionPlan: userDetails.lineItems[0].description } },
+//     { new: true }
+//   );
 
-  const userData = await users.findOne({ email });
+//   const userData = await users.findOne({ email });
 
-  console.log("userData", userData);
-};
+//   console.log("userData", userData);
+// };
 
 // app.post(
 //   "/webhook",
@@ -87,6 +89,7 @@ app.get("/", (req, res) => {
 app.use("/user", userRoutes);
 app.use("/questions", questionRoutes);
 app.use("/answer", answerRoutes);
+app.use("/webhook", webhookRoutes);
 
 const PORT = process.env.PORT || 5000;
 
